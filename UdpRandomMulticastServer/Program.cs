@@ -40,7 +40,10 @@ namespace UdpRandomMulticastServer
                     //WriteLine($"Sent: {_seqid} | {random} ");
                 }
             }
-            catch (SocketException ex) when (ex.ErrorCode != 10022)
+            catch (SocketException ex) when (ex.ErrorCode == 10022)
+            {
+            }
+            catch (Exception ex)
             {
                 WriteLine($"Error: {ex.Message}");
             }

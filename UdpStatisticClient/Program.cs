@@ -40,16 +40,16 @@ namespace UdpStatisticClient
                     RandomValues.Add((seqid, double.Parse(random.ToString())));
                     Task.Factory.StartNew(() =>
                     {
-                        try
-                        {
-                            if (RandomValues.Count >= Int32.MaxValue)
-                                RandomValues.Clear();
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"Error: {ex.Message}");
-                        }
-                    }, token);
+                         try
+                         {
+                             if (RandomValues.Count >= Int32.MaxValue / 2)
+                                 RandomValues.Clear();
+                         }
+                         catch (Exception ex)
+                         {
+                             Console.WriteLine($"Error: {ex.Message}");
+                         }
+                     }, token);
                     Thread.Sleep(new TimeSpan(0, 0, 0, 0, timespanMiliseconds)); // for simulation package lost
                 }
             }
