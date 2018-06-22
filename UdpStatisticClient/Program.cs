@@ -14,7 +14,7 @@ namespace UdpStatisticClient
 {
     class Program
     {
-        private static readonly List<(int,double)> RandomValues = new List<(int, double)>();
+        private static readonly List<(int, double)> RandomValues = new List<(int, double)>();
   
         public static async void Receiver(CancellationToken token, string multicastAddress, int localPort, int timespanMiliseconds = 500)
         {
@@ -37,7 +37,7 @@ namespace UdpStatisticClient
                     var random = BitConverter.ToInt32(receiveBytes, 4);
 
                     Console.WriteLine($" --> {seqid} | {random}");
-                    RandomValues.Add((seqid, double.Parse(random.ToString())));
+                    RandomValues.Add((seqid, Convert.ToDouble(random)));
                     Task.Factory.StartNew(() =>
                     {
                          try
