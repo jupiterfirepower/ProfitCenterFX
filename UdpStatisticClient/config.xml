@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <ipaddress name="main">
+    <multicastaddress>239.0.0.222</multicastaddress>
+  </ipaddress>
+  <timing name="main">
+  <timespanmiliseconds>500</timespanmiliseconds>
+  </timing>
+</config>
