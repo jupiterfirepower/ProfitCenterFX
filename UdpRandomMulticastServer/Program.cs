@@ -37,13 +37,12 @@ namespace UdpRandomMulticastServer
                     var remoteEndPoint = new IPEndPoint(multicastAddress, port);
                     // Отправляем данные
                     await sender.SendAsync(bufferSend, bufferSend.Length, remoteEndPoint);
-
                     //WriteLine($"Sent: {_seqid} | {random} ");
                 }
             }
-            catch (Exception ex)
+            catch (SocketException ex) when (ex.ErrorCode != 10022)
             {
-                WriteLine($"Error: {ex.Message}" );
+                WriteLine($"Error: {ex.Message}");
             }
         }
 
