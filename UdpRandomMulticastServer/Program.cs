@@ -17,7 +17,7 @@ namespace UdpRandomMulticastServer
         private static Thread _thread;
         private static int _seqid;
 
-        private static void Send(int random, string mltcastAddress, int port)
+        private static async void Send(int random, string mltcastAddress, int port)
         {
             byte[] bufferSend = new byte[8];
             try
@@ -36,14 +36,14 @@ namespace UdpRandomMulticastServer
                     // Создаем endPoint по информации об удаленном хосте
                     var remoteEndPoint = new IPEndPoint(multicastAddress, port);
                     // Отправляем данные
-                    sender.Send(bufferSend, bufferSend.Length, remoteEndPoint);
+                    await sender.SendAsync(bufferSend, bufferSend.Length, remoteEndPoint);
 
-                    WriteLine($"Sent: {_seqid} | {random} ");
+                    //WriteLine($"Sent: {_seqid} | {random} ");
                 }
             }
             catch (Exception ex)
             {
-                WriteLine($"Error: {ex.Message}{Environment.NewLine}" );
+                WriteLine($"Error: {ex.Message}" );
             }
         }
 

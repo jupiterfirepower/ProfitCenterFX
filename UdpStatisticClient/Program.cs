@@ -16,7 +16,7 @@ namespace UdpStatisticClient
     {
         private static readonly List<(int,double)> RandomValues = new List<(int, double)>();
   
-        public static void Receiver(CancellationToken token, string multicastAddress, int localPort, int timespanMiliseconds = 500)
+        public static async void Receiver(CancellationToken token, string multicastAddress, int localPort, int timespanMiliseconds = 500)
         {
             // Создаем UdpClient для чтения входящих данных
             UdpClient receivingUdpClient = new UdpClient(localPort);
@@ -31,7 +31,8 @@ namespace UdpStatisticClient
                 while (!token.IsCancellationRequested)
                 {
                     // Ожидание дейтаграммы
-                    byte[] receiveBytes = receivingUdpClient.Receive(ref remoteIpEndPoint);
+                    var result = await receivingUdpClient.ReceiveAsync().ConfigureAwait(false);
+                    byte[] receiveBytes = result.Buffer;
                     var seqid = BitConverter.ToInt32(receiveBytes, 0);
                     var random = BitConverter.ToInt32(receiveBytes, 4);
 
