@@ -88,7 +88,7 @@ namespace UdpStatisticClient
             {
                 try
                 {
-                    var data = RandomValues.Select(x=>x.Item2).ToArray();
+                    var data = RandomValues.AsParallel().Select(x=>x.Item2);
                     double avg = data.Average();
                     var median = data.Median();
                     var deviation = data.StandardDeviation();

@@ -23,6 +23,7 @@ namespace UdpRandomMulticastServer
             try
             {
                 _seqid++;
+                //WriteLine($"Sent: {_seqid} | {random} ");
                 byte[] byteArray = BitConverter.GetBytes(_seqid);
                 Buffer.BlockCopy(byteArray, 0, bufferSend, 0, byteArray.Length);
                 byte[] byteArrayRandom = BitConverter.GetBytes(random);
@@ -37,7 +38,6 @@ namespace UdpRandomMulticastServer
                     var remoteEndPoint = new IPEndPoint(multicastAddress, port);
                     // Отправляем данные
                     await sender.SendAsync(bufferSend, bufferSend.Length, remoteEndPoint);
-                    //WriteLine($"Sent: {_seqid} | {random} ");
                 }
             }
             catch (SocketException ex) when (ex.ErrorCode == 10022)
