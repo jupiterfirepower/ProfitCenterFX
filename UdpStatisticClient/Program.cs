@@ -26,8 +26,8 @@ namespace UdpStatisticClient
                 IPEndPoint remoteIpEndPoint = new IPEndPoint(IPAddress.Any, 0);
                 receivingUdpClient.JoinMulticastGroup(IPAddress.Parse(multicastAddress), 50);
                 receivingUdpClient.Client.ReceiveTimeout = 1000;
-                //receivingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, 8); // for simulation package lost
-                receivingUdpClient.Client.ReceiveBufferSize = 8; // for simulation package lost
+                receivingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, 8); // for simulation package lost
+                //receivingUdpClient.Client.ReceiveBufferSize = 8; // for simulation package lost
 
                 while (!token.IsCancellationRequested)
                 {

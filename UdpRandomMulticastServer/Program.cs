@@ -32,8 +32,6 @@ namespace UdpRandomMulticastServer
                 // Создаем UdpClient
                 using (var sender = new UdpClient())
                 {
-                    //sender.Client.SendBufferSize = 8; optimization
-                    //sender.Client.Ttl = 50;
                     var multicastAddress = IPAddress.Parse(mltcastAddress);
                     sender.JoinMulticastGroup(multicastAddress, 50);
                     // Создаем endPoint по информации об удаленном хосте
