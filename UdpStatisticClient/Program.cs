@@ -27,7 +27,7 @@ namespace UdpStatisticClient
                 receivingUdpClient.JoinMulticastGroup(IPAddress.Parse(multicastAddress), 50);
                 receivingUdpClient.Client.ReceiveTimeout = 1000;
                 //receivingUdpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReceiveBuffer, 8); // for simulation package lost
-                receivingUdpClient.Client.ReceiveBufferSize = 8;
+                receivingUdpClient.Client.ReceiveBufferSize = 8; // for simulation package lost
 
                 while (!token.IsCancellationRequested)
                 {
@@ -66,7 +66,7 @@ namespace UdpStatisticClient
 
         private static long GetLostPackages()
         {
-            var data = RandomValues.OrderBy(x => x.Item1);
+            var data = RandomValues.AsParallel().OrderBy(x => x.Item1);
             long count = 0;
             (int, double)? prev = null;
 
@@ -100,7 +100,7 @@ namespace UdpStatisticClient
                         Select(g => g.Key).
                         FirstOrDefault();
 
-                    var pkgCount = RandomValues.Max(x=>x.Item1);
+                    var pkgCount = RandomValues.AsParallel().Max(x=>x.Item1);
                     var lostPackages = GetLostPackages();
 
                     Console.WriteLine($"Average: {avg}, Standard Deviation: {deviation}, Mode: {mode}, Median: {median}");
