@@ -39,18 +39,7 @@ namespace UdpStatisticClient
 
                     Console.WriteLine($" --> {seqid} | {random}");
                     RandomValues.Add((seqid, Convert.ToDouble(random)));
-                    Task.Factory.StartNew(() =>
-                    {
-                         try
-                         {
-                             if (RandomValues.Count >= Int32.MaxValue / 2)
-                                 RandomValues.Clear();
-                         }
-                         catch (Exception ex)
-                         {
-                             Console.WriteLine($"Error: {ex.Message}");
-                         }
-                     }, token);
+
                     Thread.Sleep(new TimeSpan(0, 0, 0, 0, timespanMiliseconds)); // for simulation package lost
                 }
             }
@@ -142,6 +131,28 @@ namespace UdpStatisticClient
             {
                 Console.WriteLine("Can't parse config parameter(from config.xml) [timespanmiliseconds] in int. Run with default(500).");
                 Task.Factory.StartNew(() => Receiver(token, multicastAddress, 2222), token);
+            }
+
+            if(correct)
+            {
+                Action<Task> repeatAction = null;
+
+                repeatAction = _ignored1 =>
+                {
+                    try
+                    {
+                        if (RandomValues.Count >= Int32.MaxValue / 2)
+                            RandomValues.Clear();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error: {ex.Message}");
+                    }
+
+                    Task.Delay(new TimeSpan(0, 10, 0), token).ContinueWith(_ignored2 => repeatAction(_ignored2), token); // Repeat every 10 min
+                };
+
+                Task.Delay(5000, token).ContinueWith(repeatAction, token); // Launch with 5 sec delay
             }
         }
 
