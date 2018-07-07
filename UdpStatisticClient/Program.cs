@@ -38,7 +38,15 @@ namespace UdpStatisticClient
                     var random = BitConverter.ToInt32(receiveBytes, 4);
 
                     Console.WriteLine($" --> {seqid} | {random}");
-                    RandomValues.Add((seqid, Convert.ToDouble(random)));
+
+                    try
+                    {
+                        RandomValues.Add((seqid, Convert.ToDouble(random)));
+                    }
+                    catch (OutOfMemoryException)
+                    {
+                        RandomValues.Clear();
+                    }
 
                     Thread.Sleep(new TimeSpan(0, 0, 0, 0, timespanMiliseconds)); // for simulation package lost
                 }
@@ -133,7 +141,9 @@ namespace UdpStatisticClient
                 Task.Factory.StartNew(() => Receiver(token, multicastAddress, 2222), token);
             }
 
-            if(correct)
+            const int upperBoundary = (int)(Int32.MaxValue * 0.96);
+
+            if (correct)
             {
                 Action<Task> repeatAction = null;
 
@@ -141,7 +151,7 @@ namespace UdpStatisticClient
                 {
                     try
                     {
-                        if (RandomValues.Count >= Int32.MaxValue / 2)
+                        if (RandomValues.Count >= upperBoundary)
                             RandomValues.Clear();
                     }
                     catch (Exception ex)
