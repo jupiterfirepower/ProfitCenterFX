@@ -46,6 +46,9 @@ namespace UdpStatisticClient
                     catch (OutOfMemoryException)
                     {
                         RandomValues.Clear();
+                        GC.Collect();
+                        // Waiting till finilizer thread will call all finalizers
+                        GC.WaitForPendingFinalizers();
                     }
 
                     Thread.Sleep(new TimeSpan(0, 0, 0, 0, timespanMiliseconds)); // for simulation package lost
@@ -141,7 +144,7 @@ namespace UdpStatisticClient
                 Task.Factory.StartNew(() => Receiver(token, multicastAddress, 2222), token);
             }
 
-            const int upperBoundary = (int)(Int32.MaxValue * 0.96);
+            /*const int upperBoundary = (int)(Int32.MaxValue * 0.96);
 
             if (correct)
             {
@@ -163,7 +166,7 @@ namespace UdpStatisticClient
                 };
 
                 Task.Delay(5000, token).ContinueWith(repeatAction, token); // Launch with 5 sec delay
-            }
+            }*/
         }
 
         static void Main()
