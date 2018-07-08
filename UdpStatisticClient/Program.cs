@@ -49,6 +49,7 @@ namespace UdpStatisticClient
                         GC.Collect();
                         // Waiting till finilizer thread will call all finalizers
                         GC.WaitForPendingFinalizers();
+                        RandomValues.Add((seqid, Convert.ToDouble(random)));
                     }
 
                     Thread.Sleep(new TimeSpan(0, 0, 0, 0, timespanMiliseconds)); // for simulation package lost
