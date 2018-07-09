@@ -46,9 +46,14 @@ namespace UdpStatisticClient
                     catch (OutOfMemoryException)
                     {
                         RandomValues.Clear();
-                        GC.Collect();
-                        // Waiting till finilizer thread will call all finalizers
-                        GC.WaitForPendingFinalizers();
+
+                        Task.Factory.StartNew(() =>
+                        {
+                            GC.Collect();
+                            // Waiting till finilizer thread will call all finalizers
+                            GC.WaitForPendingFinalizers();
+                        });
+                        
                         RandomValues.Add((seqid, Convert.ToDouble(random)));
                     }
 
